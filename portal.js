@@ -65,6 +65,8 @@ function create_portal() {
   return portal
 }
 
+var ORIGIN = "https://highb.github.io/portal-sandbox/"
+
 // Receive message via window.portalHost
 if (window.portalHost) {
   window.portalHost.addEventListener('message', evt => {
