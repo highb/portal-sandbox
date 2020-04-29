@@ -71,6 +71,18 @@ function create_portal(depth) {
   return portal
 }
 
+function create_link_to_github() {
+  const gh_link = document.createElement('a');
+  gh_link.setAttribute('href', 'https://github.com/highb/portal-sandbox')
+
+  const github = document.createElement('img');
+  github.setAttribute('src', 'Octocat.png')
+  gh_link.append(github)
+  document.body.append(gh_link)
+
+  return gh_link
+}
+
 if (window.portalHost) {
   // Receive message via window.portalHost
   window.portalHost.addEventListener('message', evt => {
@@ -78,6 +90,8 @@ if (window.portalHost) {
     const depth = evt.data.depth;
     if (depth > 0) {
       create_portal(depth - 1);
+    } else {
+      create_link_to_github();
     }
   });
 }
