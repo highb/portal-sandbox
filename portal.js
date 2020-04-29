@@ -84,9 +84,9 @@ function create_link_to_github() {
 }
 
 if (window.portalHost) {
+  console.log("I'm inside a portal, so I won't create another one... yet")
   // Receive message via window.portalHost
   window.portalHost.addEventListener('message', evt => {
-    console.log("I'm inside a portal, so I won't create another one... yet")
     const depth = evt.data.depth;
     if (depth > 0) {
       create_portal(depth - 1);
