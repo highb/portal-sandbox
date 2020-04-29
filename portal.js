@@ -59,6 +59,7 @@ portal.addEventListener('transitionend', evt => {
     // Receive message via window.portalHost
     window.portalHost.addEventListener('portalactivate', evt => {
       const portal_depth = evt.data.portal_depth;
+      console.log("at portal_depth" + portal_depth)
       // handle the event
       // Customize the UI when being embedded as a portal
       text = document.createElement('p');
