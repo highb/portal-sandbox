@@ -8,13 +8,23 @@ style.innerHTML = `
     opacity: 0;
     box-shadow: 0 0 20px 10px #999;
     transform: scale(0.4);
-    transform-origin: bottom left;
-    bottom: 20px;
-    left: 20px;
+    transform-origin: center center;
     animation-name: fade-in;
     animation-duration: 1s;
     animation-delay: 0s;
     animation-fill-mode: forwards;
+  }
+  div.portal {
+    display: flex;
+    text-align: center;
+    text-align: center;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+  }
+  img {
+    margin-left: auto;
+    margin-right: auto;
   }
   .portal-transition {
     transition: transform 0.4s;
@@ -32,21 +42,26 @@ style.innerHTML = `
     100% { opacity: 1; }
   }
 `;
-const portal = document.createElement('portal');
-// Let's navigate into the WICG Portals spec page
-portal.src = 'https://highb.github.io/portal-sandbox/';
-// Add a class that defines the transition. Consider using
-// `prefers-reduced-motion` media query to control the animation.
-// https://developers.google.com/web/updates/2019/03/prefers-reduced-motion
-portal.classList.add('portal-transition');
-portal.addEventListener('click', evt => {
-  // Animate the portal once user interacts
-  portal.classList.add('portal-reveal');
-});
-portal.addEventListener('transitionend', evt => {
-  if (evt.propertyName == 'transform') {
-    // Activate the portal once the transition has completed
-    portal.activate();
-  }
-});
-document.body.append(style, portal);
+if (window.portalHost) {
+  // Customize the UI when being embedded as a portal
+
+} else {
+  const portal = document.createElement('portal');
+  // Begin portal recursion
+  portal.src = 'https://highb.github.io/portal-sandbox/';
+  // Add a class that defines the transition. Consider using
+  // `prefers-reduced-motion` media query to control the animation.
+  // https://developers.google.com/web/updates/2019/03/prefers-reduced-motion
+  portal.classList.add('portal-transition');
+  portal.addEventListener('click', evt => {
+    // Animate the portal once user interacts
+    portal.classList.add('portal-reveal');
+  });
+  portal.addEventListener('transitionend', evt => {
+    if (evt.propertyName == 'transform') {
+      // Activate the portal once the transition has completed
+      portal.activate();
+    }
+  });
+  document.body.append(style, portal);
+}
