@@ -55,9 +55,12 @@ portal.addEventListener('click', evt => {
   portal.classList.add('portal-reveal');
 });
 portal.addEventListener('transitionend', evt => {
+  console.log("transition event received")
   if (window.portalHost) {
+    console.log("inside a portal")
     // Receive message via window.portalHost
     window.portalHost.addEventListener('portalactivate', evt => {
+      console.log("portal activated")
       const portal_depth = evt.data.portal_depth;
       console.log("at portal_depth" + portal_depth)
       // handle the event
@@ -65,13 +68,14 @@ portal.addEventListener('transitionend', evt => {
       text = document.createElement('p');
       text.innerHTML = `Remaining portals` + portal_depth
       document.body.append(text, portal);
-      if portal_depth > 0 {
+      if (portal_depth > 0) {
         if (evt.propertyName == 'transform') {
           portal.activate({ data: { 'portal_depth': portal_depth } });
         }
       }
     });
   } else {
+    console.log("outside a portal? at least, there isn't a window.portalHost")
     if (evt.propertyName == 'transform') {
       // Activate the portal once the transition has completed
       portal.activate({data: {'portal_depth': 2}});
