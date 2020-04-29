@@ -65,18 +65,19 @@ function create_portal() {
   return portal
 }
 
-if (window.portalHost) {
-  console.log("I'm inside a portal, so I won't create another one... yet")
-
-  // Receive message via window.portalHost
-  window.portalHost.addEventListener('message', evt => {
+// Receive message via window.portalHost
+window.portalHost.addEventListener('message', evt => {
+  if (window.portalHost) {
+    console.log("I'm inside a portal, so I won't create another one... yet")
     const depth = evt.data.depth;
     if (depth > 0) {
       portal = create_portal();
-      portal.postMessage({'depth': depth - 1}, ORIGIN);
+      portal.postMessage({ 'depth': depth - 1 }, ORIGIN);
     }
-  });
-} else {
+  }
+});
+
+if (!window.portalHost) {
   portal = create_portal()
   portal.postMessage({'depth': 1}, ORIGIN);
 }
