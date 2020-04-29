@@ -83,6 +83,6 @@ if (!window.portalHost) {
   portal = create_portal()
 
   portal.onload = (evt => {
-    portal.postMessage({'depth': 1}, ORIGIN);
+    portal.postMessage({'depth': 10}, ORIGIN);
   });
 }
