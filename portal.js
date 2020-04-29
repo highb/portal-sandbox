@@ -43,43 +43,26 @@ style.innerHTML = `
   }
 `;
 
-const portal = document.createElement('portal');
-// Begin portal recursion
-portal.src = 'https://highb.github.io/portal-sandbox/';
-// Add a class that defines the transition. Consider using
-// `prefers-reduced-motion` media query to control the animation.
-// https://developers.google.com/web/updates/2019/03/prefers-reduced-motion
-portal.classList.add('portal-transition');
-portal.addEventListener('click', evt => {
-  // Animate the portal once user interacts
-  portal.classList.add('portal-reveal');
-});
-portal.addEventListener('transitionend', evt => {
-  console.log("transition event received")
-  if (window.portalHost) {
-    console.log("inside a portal")
-    // Receive message via window.portalHost
-    window.portalHost.addEventListener('portalactivate', evt => {
-      console.log("portal activated")
-      const portal_depth = evt.data.portal_depth;
-      console.log("at portal_depth" + portal_depth)
-      // handle the event
-      // Customize the UI when being embedded as a portal
-      text = document.createElement('p');
-      text.innerHTML = `Remaining portals` + portal_depth
-      document.body.append(text, portal);
-      if (portal_depth > 0) {
-        if (evt.propertyName == 'transform') {
-          portal.activate({ data: { 'portal_depth': portal_depth } });
-        }
-      }
-    });
-  } else {
-    console.log("outside a portal? at least, there isn't a window.portalHost")
+function create_portal() {
+  const portal = document.createElement('portal');
+  // Let's navigate into the WICG Portals spec page
+  portal.src = 'https://wicg.github.io/portals/';
+  // Add a class that defines the transition. Consider using
+  // `prefers-reduced-motion` media query to control the animation.
+  // https://developers.google.com/web/updates/2019/03/prefers-reduced-motion
+  portal.classList.add('portal-transition');
+  portal.addEventListener('click', evt => {
+    // Animate the portal once user interacts
+    portal.classList.add('portal-reveal');
+  });
+  portal.addEventListener('transitionend', evt => {
     if (evt.propertyName == 'transform') {
       // Activate the portal once the transition has completed
-      portal.activate({data: {'portal_depth': 2}});
+      portal.activate();
     }
-  }
-});
-document.body.append(style, portal);
+  });
+
+  document.body.append(style, portal);
+}
+
+create_portal()
