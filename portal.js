@@ -14,13 +14,11 @@ style.innerHTML = `
     animation-delay: 0s;
     animation-fill-mode: forwards;
   }
-  div.portal {
-    display: flex;
-    text-align: center;
-    text-align: center;
-    align-items: center;
-    height: 100%;
-    width: 100%;
+  body {
+    background-image: url("portal.png");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
   }
   img {
     margin-left: auto;
@@ -65,4 +63,8 @@ function create_portal() {
   document.body.append(style, portal);
 }
 
-create_portal()
+if (window.portalHost) {
+  console.log("I'm inside a portal, so I won't create another one... yet")
+} else {
+  create_portal()
+}
