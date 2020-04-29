@@ -61,10 +61,22 @@ function create_portal() {
   });
 
   document.body.append(style, portal);
+
+  return portal
 }
 
 if (window.portalHost) {
   console.log("I'm inside a portal, so I won't create another one... yet")
+
+  // Receive message via window.portalHost
+  window.portalHost.addEventListener('message', evt => {
+    const depth = evt.data.depth;
+    if (depth > 0) {
+      portal = create_portal();
+      portal.postMessage({'depth': depth - 1}, ORIGIN);
+    }
+  });
 } else {
-  create_portal()
+  portal = create_portal()
+  portal.postMessage({'depth': 1}, ORIGIN);
 }
