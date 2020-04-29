@@ -44,7 +44,7 @@ style.innerHTML = `
 function create_portal() {
   const portal = document.createElement('portal');
   // Let's navigate into the WICG Portals spec page
-  portal.src = 'https://wicg.github.io/portals/';
+  portal.src = 'https://highb.github.io/portal-sandbox/';
   // Add a class that defines the transition. Consider using
   // `prefers-reduced-motion` media query to control the animation.
   // https://developers.google.com/web/updates/2019/03/prefers-reduced-motion
