@@ -62,22 +62,24 @@ function create_portal() {
 
   document.body.append(style, portal);
 
+  portal.activate().then(_ => {
+    // Receive message via window.portalHost
+    if (window.portalHost) {
+      window.portalHost.addEventListener('message', evt => {
+        console.log("I'm inside a portal, so I won't create another one... yet")
+        const depth = evt.data.depth;
+        if (depth > 0) {
+          portal = create_portal();
+          portal.postMessage({ 'depth': depth - 1 }, ORIGIN);
+        }
+      });
+    }
+  });
+
   return portal
 }
 
 var ORIGIN = "https://highb.github.io/portal-sandbox/"
-
-// Receive message via window.portalHost
-if (window.portalHost) {
-  window.portalHost.addEventListener('message', evt => {
-    console.log("I'm inside a portal, so I won't create another one... yet")
-    const depth = evt.data.depth;
-    if (depth > 0) {
-      portal = create_portal();
-      portal.postMessage({ 'depth': depth - 1 }, ORIGIN);
-    }
-  });
-}
 
 if (!window.portalHost) {
   portal = create_portal()
