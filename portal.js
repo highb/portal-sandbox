@@ -41,10 +41,12 @@ style.innerHTML = `
   }
 `;
 
-function create_portal() {
+var ORIGIN = "https://highb.github.io/portal-sandbox/"
+
+function create_portal(depth) {
   const portal = document.createElement('portal');
-  // Let's navigate into the WICG Portals spec page
-  portal.src = 'https://highb.github.io/portal-sandbox/';
+  // Let's navigate into ourself
+  portal.src = ORIGIN;
   // Add a class that defines the transition. Consider using
   // `prefers-reduced-motion` media query to control the animation.
   // https://developers.google.com/web/updates/2019/03/prefers-reduced-motion
@@ -62,6 +64,10 @@ function create_portal() {
 
   document.body.append(style, portal);
 
+  portal.onload = (evt => {
+    portal.postMessage({'depth': depth}, ORIGIN);
+  });
+
   return portal
 }
 
@@ -71,18 +77,12 @@ if (window.portalHost) {
     console.log("I'm inside a portal, so I won't create another one... yet")
     const depth = evt.data.depth;
     if (depth > 0) {
-      portal = create_portal();
-      portal.postMessage({ 'depth': depth - 1 }, ORIGIN);
+      create_portal(depth - 1);
     }
   });
 }
 
-var ORIGIN = "https://highb.github.io/portal-sandbox/"
-
 if (!window.portalHost) {
-  portal = create_portal()
-
-  portal.onload = (evt => {
-    portal.postMessage({'depth': 10}, ORIGIN);
-  });
+  initial_depth = 10
+  create_portal(initial_depth)
 }
