@@ -97,6 +97,6 @@ if (window.portalHost) {
 }
 
 if (!window.portalHost) {
-  initial_depth = 10
+  initial_depth = 5
   create_portal(initial_depth)
 }
